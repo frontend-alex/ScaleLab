@@ -17,3 +17,4 @@ export function createDb(databaseUrl: string) {
 }
 
 export type Database = ReturnType<typeof createDb>["db"];
+export type DatabaseClient = ReturnType<typeof createDb>;

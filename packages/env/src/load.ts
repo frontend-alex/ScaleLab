@@ -1,3 +1,3 @@
-import { loadRootEnv } from "./index";
+import { loadRootEnv } from "./index.js";
 
 loadRootEnv();

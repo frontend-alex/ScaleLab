@@ -1,5 +1,7 @@
-import { Logger } from "@nestjs/common";
+
 import "@repo/env/load";
+
+import { Logger } from "@nestjs/common";
 import { createApp } from "./create-app";
 
 async function boostrap() {

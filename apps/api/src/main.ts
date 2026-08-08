@@ -1,20 +1,18 @@
-import "@repo/env/load";
-
 import { Logger } from "@nestjs/common";
 import { createApp } from "./create-app";
+import { env } from "./config/env";
 
 async function boostrap() {
   const app = await createApp();
 
   app.enableShutdownHooks();
 
-  const port = Number(process.env.API_PORT);
-  await app.listen(port);
+  await app.listen(env.API_PORT);
 
   new Logger("Bootstrap").log({
-    message: `Application is running on: http://localhost:${port}`,
-    port: Number(port),
-    environment: process.env.NODE_ENV ?? "development",
+    message: `Application is running on: http://localhost:${env.API_PORT}`,
+    port: env.API_PORT,
+    environment: env.NODE_ENV,
   });
 }
 

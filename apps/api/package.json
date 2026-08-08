@@ -6,12 +6,12 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "pnpm --filter @repo/env build && nest build",
+    "build": "pnpm --filter @repo/env build && pnpm --filter @repo/contracts build && pnpm --filter @repo/db build && nest build",
     "format": "biome format --write .",
     "start": "nest start",
-    "dev": "pnpm --filter @repo/env build && nest start --watch",
+    "dev": "pnpm --filter @repo/env build && pnpm --filter @repo/contracts build && pnpm --filter @repo/db build && nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "pnpm --filter @repo/env build && node dist/main",
+    "start:prod": "pnpm --filter @repo/env build && pnpm --filter @repo/contracts build && pnpm --filter @repo/db build && node dist/main",
     "lint": "biome check .",
     "test": "jest",
     "test:watch": "jest --watch",
@@ -20,12 +20,16 @@
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
   "dependencies": {
-    "@repo/env": "workspace:*",
     "@nestjs/common": "^11.0.1",
+    "@nestjs/config": "^4.0.4",
     "@nestjs/core": "^11.0.1",
     "@nestjs/platform-express": "^11.0.1",
+    "@repo/contracts": "workspace:*",
+    "@repo/db": "workspace:*",
+    "@repo/env": "workspace:*",
     "class-transformer": "^0.5.1",
     "class-validator": "^0.15.1",
+    "drizzle-orm": "1.0.0-rc.4",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1"
   },
