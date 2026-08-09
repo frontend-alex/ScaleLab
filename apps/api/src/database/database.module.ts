@@ -12,7 +12,6 @@ import { DATABASE } from "./database.constant";
 
 @Injectable()
 export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
-    
   private readonly client = createDb(env.DATABASE_URL);
   private readonly logger = new Logger(DatabaseService.name);
 
@@ -25,7 +24,6 @@ export class DatabaseService implements OnModuleInit, OnApplicationShutdown {
       await this.client.pool.query("select 1");
 
       this.logger.log("Database connected");
-
     } catch (error) {
       this.logger.fatal(
         "Database connection failed",

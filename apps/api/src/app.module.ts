@@ -1,8 +1,8 @@
-import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
-import { AuthModule } from './auth/auth.module';
-import { validateEnv } from './config/env';
-import { DatabaseModule } from './database/database.module';
+import { Module } from "@nestjs/common";
+import { ConfigModule } from "@nestjs/config";
+import { AuthModule } from "./auth/auth.module";
+import { validateEnv } from "./config/env";
+import { DatabaseModule } from "./database/database.module";
 
 @Module({
   imports: [
