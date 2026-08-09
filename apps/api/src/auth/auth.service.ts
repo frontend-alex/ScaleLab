@@ -16,15 +16,15 @@ export class AuthService {
 
     console.log(email, password)
 
-    // const [existingUser] = await this.db
-    //   .select({ id: users.id })
-    //   .from(users)
-    //   .where(eq(users.email, email))
-    //   .limit(1);
+    const [existingUser] = await this.db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.email, email))
+      .limit(1);
 
-    // if (existingUser) {
-    //   throw new Error('User already exists');
-    // }
+    if (existingUser) {
+      throw new Error('User already exists');
+    }
 
   }
 }
