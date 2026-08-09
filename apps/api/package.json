@@ -7,11 +7,11 @@
   "license": "UNLICENSED",
   "type": "commonjs",
   "scripts": {
-    "build": "nest build",
+    "build": "nest build --path tsconfig.json",
     "format": "biome format --write .",
-    "start": "nest start",
-    "dev": "nest start --watch",
-    "start:debug": "nest start --debug --watch",
+    "start": "nest start --path tsconfig.json",
+    "dev": "nest start --watch --path tsconfig.json",
+    "start:debug": "nest start --debug --watch --path tsconfig.json",
     "start:prod": "node dist/main.js",
     "lint": "biome check .",
     "check-types": "tsc --noEmit",
@@ -33,7 +33,8 @@
     "class-validator": "^0.15.1",
     "drizzle-orm": "1.0.0-rc.4",
     "reflect-metadata": "^0.2.2",
-    "rxjs": "^7.8.1"
+    "rxjs": "^7.8.1",
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@nestjs/cli": "^11.0.0",

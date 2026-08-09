@@ -1,7 +1,10 @@
+import { zodResolver } from "@hookform/resolvers/zod";
+import { type AuthContract, authContractSchema } from "@repo/contracts";
 import { Button } from "@repo/ui/button";
 import {
   Field,
   FieldDescription,
+  FieldError,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
@@ -10,14 +13,49 @@ import { Input } from "@repo/ui/components/input";
 import { cn } from "@repo/ui/lib/utils";
 import { GalleryVerticalEnd } from "lucide-react";
 import Link from "next/link";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+
+import { useRegister } from "../hooks/useRegister";
+
+const registerFormSchema = authContractSchema
+  .extend({
+    confirmPassword: z.string().min(8),
+  })
+  .refine((data) => data.password === data.confirmPassword, {
+    path: ["confirmPassword"],
+    message: "Passwords do not match",
+  });
+
+type RegisterFormValues = z.infer<typeof registerFormSchema>;
 
 export function RegisterForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const registerMutation = useRegister();
+  const form = useForm<RegisterFormValues>({
+    resolver: zodResolver(registerFormSchema),
+    defaultValues: {
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+  });
+
+  function onSubmit(data: RegisterFormValues) {
+
+    const credentials: AuthContract = {
+      email: data.email,
+      password: data.password,
+    };
+
+    registerMutation.mutate(credentials);
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
-      <form>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
         <FieldGroup>
           <div className="flex flex-col items-center gap-2 text-center">
             <a
@@ -41,6 +79,7 @@ export function RegisterForm({
               type="email"
               placeholder="m@example.com"
               required
+              {...form.register("email")}
             />
           </Field>
           <Field>
@@ -50,6 +89,7 @@ export function RegisterForm({
               type="password"
               placeholder="••••••••"
               required
+              {...form.register("password")}
             />
           </Field>
           <Field>
@@ -59,7 +99,9 @@ export function RegisterForm({
               type="password"
               placeholder="••••••••"
               required
+              {...form.register("confirmPassword")}
             />
+            <FieldError errors={[form.formState.errors.confirmPassword]} />
           </Field>
           <Field>
             <Button type="submit">Create Account</Button>

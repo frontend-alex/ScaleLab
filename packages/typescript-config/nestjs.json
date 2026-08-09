@@ -4,7 +4,6 @@
   "compilerOptions": {
     "emitDecoratorMetadata": true,
     "experimentalDecorators": true,
-    "incremental": true,
     "lib": ["ES2023"],
     "noFallthroughCasesInSwitch": true,
     "noImplicitOverride": true,

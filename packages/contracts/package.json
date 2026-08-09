@@ -2,7 +2,7 @@
   "name": "@repo/contracts",
   "version": "0.0.0",
   "private": true,
-  "type": "commonjs",
+  "type": "module",
   "exports": {
     ".": {
       "types": "./dist/index.d.ts",

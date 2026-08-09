@@ -33,6 +33,12 @@ export class EnvironmentVariables {
       "DATABASE_URL is required. `docker compose up -d` starts one, or set it to any Postgres connection string.",
   })
   DATABASE_URL!: string;
+
+  @IsString()
+  @MinLength(32, {
+    message: "JWT_SECRET must be at least 32 characters long.",
+  })
+  JWT_SECRET!: string;
 }
 
 export function validateEnv(
