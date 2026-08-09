@@ -1,4 +1,4 @@
-import { LoginForm } from "@/app/components/forms/login-form"
+import { LoginForm } from "@/app/components/forms/login-form";
 
 const page = () => {
   return (
@@ -7,7 +7,7 @@ const page = () => {
         <LoginForm />
       </div>
     </div>
-  )
-}
+  );
+};
 
 export default page;

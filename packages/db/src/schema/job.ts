@@ -27,26 +27,17 @@ export const jobs = pgTable("jobs", {
 
   type: varchar("type", { length: 100 }).notNull(),
 
-  status: jobStatusEnum("status")
-    .default("pending")
-    .notNull(),
+  status: jobStatusEnum("status").default("pending").notNull(),
 
-  progress: integer("progress")
-    .default(0)
-    .notNull(),
+  progress: integer("progress").default(0).notNull(),
 
-  input: jsonb("input")
-    .$type<Record<string, unknown>>()
-    .notNull(),
+  input: jsonb("input").$type<Record<string, unknown>>().notNull(),
 
-  result: jsonb("result")
-    .$type<Record<string, unknown>>(),
+  result: jsonb("result").$type<Record<string, unknown>>(),
 
   error: text("error"),
 
-  attempts: integer("attempts")
-    .default(0)
-    .notNull(),
+  attempts: integer("attempts").default(0).notNull(),
 
   createdAt: timestamp("created_at", { withTimezone: true })
     .defaultNow()

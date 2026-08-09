@@ -1,15 +1,15 @@
-import { Button } from "@repo/ui/button"
+import { Button } from "@repo/ui/button";
 import {
   Field,
   FieldDescription,
   FieldGroup,
   FieldLabel,
   FieldSeparator,
-} from "@repo/ui/components/field"
-import { Input } from "@repo/ui/components/input"
-import { cn } from "@repo/ui/lib/utils"
-import { GalleryVerticalEnd } from "lucide-react"
-import Link from "next/link"
+} from "@repo/ui/components/field";
+import { Input } from "@repo/ui/components/input";
+import { cn } from "@repo/ui/lib/utils";
+import { GalleryVerticalEnd } from "lucide-react";
+import Link from "next/link";
 
 export function RegisterForm({
   className,
@@ -92,5 +92,5 @@ export function RegisterForm({
         and <a href="#">Privacy Policy</a>.
       </FieldDescription>
     </div>
-  )
+  );
 }
