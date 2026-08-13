@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:17-alpine
+    environment:
+      POSTGRES_USER: ${POSTGRES_USER:-scalelab}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-scalelab}
+      POSTGRES_DB: ${POSTGRES_DB:-scalelab}
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test:
+        [
+          "CMD-SHELL",
+          "pg_isready -U ${POSTGRES_USER:-scalelab} -d ${POSTGRES_DB:-scalelab}",
+        ]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    environment:
+      NODE_ENV: development
+      DATABASE_URL: postgresql://${POSTGRES_USER:-scalelab}:${POSTGRES_PASSWORD:-scalelab}@postgres:5432/${POSTGRES_DB:-scalelab}
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+volumes:
+  postgres_data:
