@@ -8,7 +8,7 @@ export async function createApp(): Promise<NestExpressApplication> {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
 
   app.enableCors({
-    origin: process.env.WEB_ORIGIN,
+    origin: process.env.WEB_ORIGIN ?? "http://localhost:3000",
     credentials: true,
   });
 
