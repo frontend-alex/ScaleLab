@@ -3,6 +3,8 @@ services:
     build:
       context: .
       dockerfile: apps/web/Dockerfile
+      args:
+        API_URL: ${API_URL}
     ports:
       - "3000:3000"
     env_file:
@@ -10,8 +12,11 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       API_PORT: ${API_PORT}
-      NEXT_PUBLIC_API_PORT: ${API_PORT}
+      API_URL: ${API_URL}
+      HOST: ${HOST:-0.0.0.0}
       WEB_ORIGIN: ${WEB_ORIGIN}
+      REDIS_HOST: ${REDIS_HOST}
+      REDIS_PORT: ${REDIS_PORT}
     depends_on:
       - api
 
@@ -26,6 +31,7 @@ services:
     environment:
       NODE_ENV: ${NODE_ENV}
       API_PORT: ${API_PORT}
+      HOST: ${HOST:-0.0.0.0}
       DATABASE_URL: ${DATABASE_URL}
       JWT_SECRET: ${JWT_SECRET}
       WEB_ORIGIN: ${WEB_ORIGIN}

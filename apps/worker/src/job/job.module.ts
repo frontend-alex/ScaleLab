@@ -7,8 +7,8 @@ import { JobWorker } from "./job.worker";
   imports: [
     BullModule.forRoot({
       connection: {
-        host: "localhost",
-        port: 6379,
+        host: process.env.REDIS_HOST,
+        port: Number(process.env.REDIS_PORT),
       },
       defaultJobOptions: {
         attempts: 3,

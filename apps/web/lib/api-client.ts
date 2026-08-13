@@ -4,7 +4,7 @@ import axios, { AxiosInstance } from "axios";
 const DEFAULT_TIMEOUT = 30000;
 
 export const api: AxiosInstance = axios.create({
-  baseURL: `http://localhost:${env.NEXT_PUBLIC_API_PORT}`,
+  baseURL: env.API_URL,
   withCredentials: true,
   headers: {
     "Content-Type": "application/json",

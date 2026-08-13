@@ -8,9 +8,8 @@ RUN corepack enable
 FROM base AS build
 WORKDIR /repo
 
-ARG API_PORT=3001
-ENV API_PORT=${API_PORT}
-ENV NEXT_PUBLIC_API_PORT=${API_PORT}
+ARG API_URL
+ENV API_URL=${API_URL}
 
 COPY pnpm-workspace.yaml package.json pnpm-lock.yaml turbo.json ./
 COPY apps/web/package.json apps/web/package.json
