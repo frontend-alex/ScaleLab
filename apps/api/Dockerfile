@@ -13,7 +13,6 @@ COPY apps/api/package.json apps/api/package.json
 COPY packages/db/package.json packages/db/package.json
 COPY packages/env/package.json packages/env/package.json
 COPY packages/contracts/package.json packages/contracts/package.json
-COPY packages/typescript-config/package.json packages/typescript-config/package.json
 
 RUN pnpm install --frozen-lockfile
 
@@ -21,7 +20,6 @@ COPY apps/api apps/api
 COPY packages/db packages/db
 COPY packages/env packages/env
 COPY packages/contracts packages/contracts
-COPY packages/typescript-config packages/typescript-config
 
 RUN pnpm exec turbo run build --filter=api
 
