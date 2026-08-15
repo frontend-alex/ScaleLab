@@ -8,15 +8,13 @@ async function boostrap() {
 
   app.enableShutdownHooks();
 
-  const host = process.env.HOST ?? "0.0.0.0";
-  const port = Number(process.env.PORT ?? process.env.WORKER_PORT);
-  await app.listen(port, host);
+  const port = Number(process.env.WORKER_PORT);
+  await app.listen(port);
 
   new Logger("Bootstrap").log({
     message: "Worker application started",
-    host,
     port: Number(port),
-    environment: process.env.NODE_ENV ?? "development",
+    environment: process.env.NODE_ENV,
   });
 }
 

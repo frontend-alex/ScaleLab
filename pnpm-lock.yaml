@@ -184,6 +184,9 @@ importers:
       '@repo/env':
         specifier: workspace:*
         version: link:../../packages/env
+      '@repo/queue':
+        specifier: workspace:^
+        version: link:../../packages/queue
       bullmq:
         specifier: ^6.0.9
         version: 6.0.9(ioredis@5.11.1)(pg@8.22.0)
@@ -304,6 +307,16 @@ importers:
       '@types/node':
         specifier: ^22.15.3
         version: 22.15.3
+
+  packages/queue:
+    dependencies:
+      bullmq:
+        specifier: ^6.0.9
+        version: 6.0.9(ioredis@5.11.1)(pg@8.22.0)
+    devDependencies:
+      '@repo/typescript-config':
+        specifier: workspace:*
+        version: link:../typescript-config
 
   packages/typescript-config: {}
 
@@ -4405,6 +4418,7 @@ packages:
 
   semver@6.3.1:
     resolution: {integrity: sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA==}
+    hasBin: true
 
   semver@7.8.5:
     resolution: {integrity: sha512-Y7/KDsb8LjooZpwaqGyulO6DQlksgCncchHGk+sZIY4SBvUocMBEFH5Ur1fI4dV+Jvl0w6cjvucaIi40puRioA==}

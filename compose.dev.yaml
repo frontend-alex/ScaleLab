@@ -1,4 +1,14 @@
 services:
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    healthcheck:
+      test: ["CMD", "redis-cli", "ping"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
   postgres:
     image: postgres:17-alpine
     environment:
@@ -22,9 +32,31 @@ services:
   api:
     environment:
       NODE_ENV: development
+      HOST: 0.0.0.0
+      API_URL: http://localhost:3001
       DATABASE_URL: postgresql://${POSTGRES_USER:-scalelab}:${POSTGRES_PASSWORD:-scalelab}@postgres:5432/${POSTGRES_DB:-scalelab}
     depends_on:
       postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      args:
+        API_URL: http://localhost:3001
+
+  worker:
+    build:
+      context: .
+      dockerfile: apps/worker/Dockerfile
+    ports:
+      - "3002:3002"
+    environment:
+      NODE_ENV: development
+      HOST: 0.0.0.0
+      WORKER_PORT: 3002
+      REDIS_URL: redis://redis:6379
+    depends_on:
+      redis:
         condition: service_healthy
 
 volumes:

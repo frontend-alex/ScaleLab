@@ -7,13 +7,11 @@ async function boostrap() {
 
   app.enableShutdownHooks();
 
-  const host = process.env.HOST ?? "0.0.0.0";
-  const port = Number(process.env.PORT ?? env.API_PORT);
-  await app.listen(port, host);
+  const port = Number(env.API_PORT);
+  await app.listen(port);
 
   new Logger("Bootstrap").log({
     message: "API application started",
-    host,
     port,
     environment: env.NODE_ENV,
   });

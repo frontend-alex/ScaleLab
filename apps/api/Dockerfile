@@ -30,7 +30,6 @@ WORKDIR /app
 
 ENV NODE_ENV=production
 ENV API_PORT=3001
-ENV HOSTNAME=0.0.0.0
 
 COPY --from=build /repo/node_modules ./node_modules
 
