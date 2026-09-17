@@ -5,7 +5,7 @@ const nextConfig = {
   output: "standalone",
   transpilePackages: ["@repo/ui"],
   env: {
-    NEXT_PUBLIC_API_PORT: process.env.API_PORT,
+    API_URL: process.env.API_URL,
   },
 };
 

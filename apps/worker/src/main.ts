@@ -12,9 +12,9 @@ async function boostrap() {
   await app.listen(port);
 
   new Logger("Bootstrap").log({
-    message: `Application is running on: http://localhost:${port}`,
+    message: "Worker application started",
     port: Number(port),
-    environment: process.env.NODE_ENV ?? "development",
+    environment: process.env.NODE_ENV,
   });
 }
 

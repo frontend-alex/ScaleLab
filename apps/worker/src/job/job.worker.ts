@@ -1,7 +1,8 @@
 import { OnWorkerEvent, Processor, WorkerHost } from "@nestjs/bullmq";
+import { JOB_QUEUE_NAME } from "@repo/queue";
 import { Job } from "bullmq";
 
-@Processor("job", { concurrency: 1 })
+@Processor(JOB_QUEUE_NAME, { concurrency: 1 })
 export class JobWorker extends WorkerHost {
   async process(job: Job) {
     const totalSteps = 5;
