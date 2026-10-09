@@ -1,159 +1,80 @@
-# Turborepo starter
+# ScaleLab
 
-This Turborepo starter is maintained by the Turborepo core team.
+A TypeScript monorepo exploring a web application, authentication API, and asynchronous job worker with shared packages.
 
-## Using this example
+## Current status
 
-Run the following command:
+Development foundation. Authentication and a demonstration queue worker exist; the worker simulates progress rather than performing a production business task.
 
-```sh
-npx create-turbo@latest
+## Features and implementation
+
+- Next.js authentication pages and feature hooks.
+- NestJS API using shared Zod contracts and a PostgreSQL/Drizzle data layer.
+- Password hashing with scrypt and token creation in the authentication service.
+- NestJS/BullMQ worker with queue events and job-progress updates.
+- Shared contracts, database, queue, environment, UI, and TypeScript-configuration packages.
+- Docker Compose configuration for local PostgreSQL, Redis, web, API, and worker services.
+
+## Technology
+
+TypeScript, Next.js/React, NestJS, Zod, Drizzle ORM, PostgreSQL, BullMQ, Redis, Turborepo, Biome, and pnpm. Root package.json requires Node >=20.9.0 and pins pnpm 9.0.0.
+
+## Repository map
+
+| Path | Purpose |
+| --- | --- |
+| [apps/web](apps/web) | Next.js application |
+| [apps/api](apps/api) | Authentication API |
+| [apps/worker](apps/worker) | Queue producer endpoint and worker |
+| [packages/contracts](packages/contracts) | Shared schemas and API shapes |
+| [packages/db](packages/db) | Database client and table definitions |
+| [packages/queue](packages/queue) | Queue constants |
+| [compose.dev.yaml](compose.dev.yaml) | Development database, Redis, and worker configuration |
+
+## Local setup
+
+Use the pnpm version declared in package.json. From the repository root:
+
+```bash
+git clone https://github.com/frontend-alex/ScaleLab.git
+cd ScaleLab
+pnpm install
+cp .env.example .env
 ```
 
-## What's inside?
+Fill NODE_ENV=development, API_PORT=3001, WORKER_PORT=3002, WEB_ORIGIN=http://localhost:3000, API_URL=http://localhost:3001, REDIS_URL, DATABASE_URL, and JWT_SECRET. Retain the development database values only for local use. Then run:
 
-This Turborepo includes the following packages/apps:
-
-### Apps and Packages
-
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
-
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
-
-### Utilities
-
-This Turborepo has some additional tools already setup for you:
-
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
-
-### Build
-
-To build all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo build
+```bash
+docker compose -f compose.yaml -f compose.dev.yaml up --build
 ```
 
-Without global `turbo`, use your package manager:
+The configured ports are web 3000, API 3001, worker 3002, PostgreSQL 5432, and Redis 6379. In a host-run development process, database/Redis URLs use localhost; inside Compose they use postgres/redis service names.
 
-```sh
-cd my-turborepo
-npx turbo build
-pnpm dlx turbo build
-pnpm exec turbo build
+For host development, run pnpm build before pnpm dev so the shared packages have build output. Start PostgreSQL and Redis separately. Provision the database tables from packages/db/src/schema before using registration: the repository includes a Drizzle configuration but no database migration script in its package.json.
+
+## Verification
+
+```bash
+pnpm build
+pnpm check-types
+pnpm lint
+pnpm --filter api test:e2e
+pnpm --filter worker test:e2e
 ```
 
-You can build a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
+Test scripts exist in the API and worker packages. The inspected API e2e test still expects the Nest starter response at GET /; that fixture is not proof of authentication coverage. These application commands were inspected, not executed.
 
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
+## Limitations and next steps
 
-```sh
-turbo build --filter=docs
-```
+- The demonstration worker uses timed simulated work; replace it with a real task before claiming domain functionality.
+- The root production Compose file contains web/API only; the development overlay adds worker and supporting services.
+- Database migration/provisioning needs a documented, repeatable command.
+- Authentication verification, authorization, and meaningful integration coverage need explicit validation.
 
-Without global `turbo`:
+## Code review starting points
 
-```sh
-npx turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
-```
-
-### Develop
-
-To develop all apps and packages, run the following command:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo dev
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo dev
-pnpm exec turbo dev
-pnpm exec turbo dev
-```
-
-You can develop a specific package by using a [filter](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters):
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo dev --filter=web
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
-
-### Remote Caching
-
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
-
-Turborepo can use a technique known as [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
-
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed (recommended):
-
-```sh
-cd my-turborepo
-turbo login
-```
-
-Without global `turbo`, use your package manager:
-
-```sh
-cd my-turborepo
-npx turbo login
-pnpm exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-With [global `turbo`](https://turborepo.dev/docs/getting-started/installation#global-installation) installed:
-
-```sh
-turbo link
-```
-
-Without global `turbo`:
-
-```sh
-npx turbo link
-pnpm exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.dev/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.dev/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.dev/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.dev/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.dev/docs/reference/configuration)
-- [CLI Usage](https://turborepo.dev/docs/reference/command-line-reference)
+- [apps/api/src/auth/auth.service.ts](apps/api/src/auth/auth.service.ts)
+- [apps/api/src/auth/auth.controller.ts](apps/api/src/auth/auth.controller.ts)
+- [apps/worker/src/job/job.worker.ts](apps/worker/src/job/job.worker.ts)
+- [apps/worker/src/job/job.controller.ts](apps/worker/src/job/job.controller.ts)
+- [packages/db/drizzle.config.ts](packages/db/drizzle.config.ts)
